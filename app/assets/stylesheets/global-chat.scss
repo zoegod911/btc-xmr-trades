@@ -1,0 +1,316 @@
+.global-trade {
+  .chatroom-status {
+    background-color: #384048;
+    color: white;
+    font-size: 16px;
+    text-shadow: 2px 3px 2px slategray;
+
+    h1 {
+      margin: 0;
+      padding: 0.7em;
+      font-size: 1.3rem;
+    }
+  }
+  .global-chat {
+    display: flex;
+
+    .global-trade-chatroom {
+      height: 78.8vh;
+      width: 82vw;
+    }
+
+    .messages {
+      height: 79.7vh;
+      padding-top: 36px;
+      overflow-y: scroll;
+      background-color: #121619;
+    }
+
+    .sent-by {
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+      .avatar {
+        z-index: 0;
+        width: 78px; height: 78px;
+        background-color: transparent;
+        img {
+          width: 78px; height: 78px;
+        }
+      }
+    }
+
+    .msg {
+      padding: 10px 2em 1em;
+      display: flex;
+      margin: 0 0.3em;
+
+      &.start {
+        justify-content: flex-start;
+      }
+
+      &.reply {
+        justify-content: flex-end;
+      }
+
+      .username, .sent-at {
+        color: wheat;
+        font-size: 1.1em;
+        a { color: aquamarine; }
+        b { color: crimson; }
+        .popover {
+          .card {
+            box-shadow: 1px 12px 16px 18px rgba(0,0,0,0.41);
+            background-color: #4A4A4A;
+            border-radius: 6px;
+            border-color: #eee;
+            z-index: -2;
+          }
+          .card-header {
+            color: goldenrod;
+          }
+          .card-body {
+            max-height: 155px;
+            overflow-y: scroll;
+            font-weight: 300;
+            letter-spacing: -1.2px;
+            ul {
+              li {
+                text-align: left;
+                list-style: square;
+              }
+            }
+          }
+          a {
+            color: darkgoldenrod;
+          }
+        }
+      }
+
+
+      .msg-content {
+        display: inline-block;
+
+        .bubble {
+          display: inline-block;
+        }
+
+        .talk-bubble {
+          min-width: 240px;
+          max-width: 475px;
+          font-weight: 900;
+          color: #582300;
+          border-radius: 11px;
+          letter-spacing: 1.1px;
+          margin: 14px 50px auto 43px;
+
+          &.system {
+            background-color: rgba(77, 22, 6, 0.99);
+            color: snow;
+            font-size: 1.2em;
+            font-weight: 900;
+            animation-play-state: running;
+            animation: float 4s ease-in-out infinite;
+            box-shadow: 7px 12px 23px rgba(snow, 0.03) !important;
+            &:after {
+              border-color: rgba(77, 22, 6, 0.99) transparent transparent rgba(77, 22, 6, 0.99);
+            }
+            &:hover {
+              animation-play-state: paused;
+            }
+
+            &.tri-right.left-in {
+              &:after {
+                border-color: rgba(77, 22, 6, 0.99) rgba(77, 22, 6, 0.99) transparent transparent;
+              }
+            }
+          }
+
+          p {
+             word-wrap: break-word;
+           }
+        }
+
+        .sent-at {
+          margin: 10px 50px;
+          position: relative;
+          left: -10px;
+        }
+      }
+    }
+
+    .sidebar {
+      width: 22vw;
+      height: 79.7vh;
+      background-color: slategray;
+
+      hr { margin: 0; }
+      .lists {
+        height: 100%;
+      }
+      .trader-list, .request-list {
+        overflow-y: scroll;
+        height: 100%;
+
+        .popover {
+          z-index: 999999;
+          position: fixed;
+          top: initial;
+          LEFT: initial;
+
+          .card {
+            box-shadow: 1px 12px 16px 18px rgba(0,0,0,0.41);
+            background-color: #4A4A4A;
+            border-radius: 6px;
+            border-color: #eee;
+            z-index: -2;
+          }
+          .card-header {
+            color: goldenrod;
+          }
+          .card-body {
+            max-height: 155px;
+            overflow-y: scroll;
+            ul {
+              li {
+                text-align: left;
+                list-style: square;
+                a {
+                  font-weight: 300;
+                  letter-spacing: -1.2px;
+                  color: darkgoldenrod;
+                }
+              }
+            }
+          }
+        }
+
+        .trader {
+          display: flex;
+          border-top: 4px solid lightslategray;
+
+          &:last-child {
+            border-bottom: 3px solid lightslategray;
+          }
+
+          .led-green {
+            margin: 25px 20px;
+          }
+          .username {
+            margin: 17px 0;
+            a { color: aliceblue; font-weight: 100; }
+          }
+        }
+      }
+
+      .sent-trade-offers {
+        overflow-y: scroll;
+        height: 20%;
+      }
+      .request {
+        background: rgba(255, 255, 253, 0.3);
+      }
+      .trade-offer {
+        background: rgba(steelblue, 0.3);
+
+        a {
+          color: white;
+          font-weight: 100;
+          letter-spacing: 0.9px;
+        }
+      }
+      .request, .trade-offer {
+          border-top: 1px azure solid;
+          padding: 1em 0;
+
+          &:last-child {
+            border-bottom: 1px azure solid;
+          }
+
+          .offer {
+            margin: 1.5em 0;
+            .field {
+              span {
+                margin-left: 3px;
+              }
+
+              input[type=submit] {
+                margin-left: 16px;
+              }
+            }
+          }
+          .top {
+            display: flex;
+            .requester, .trader {
+              width: 50%;
+              margin: 17px;
+              text-overflow: ellipsis;
+
+              a {
+                color: brown;
+                font-weight: 900;
+                letter-spacing: 1.6px;
+              }
+            }
+          }
+
+          .info {
+            padding: 0 1em;
+            line-height: 1.3;
+          }
+          .exchange {
+            display: flex;
+
+            .coin-img {
+              margin: 20px;
+              img {
+                width: 20px; height: 20px;
+              }
+            }
+
+            .to {
+              font-size: 27px;
+              margin: 11px 0;
+            }
+          }
+
+          .info {
+            .trade {
+              span img {
+                width: 30px; height: 30px;
+              }
+            }
+          }
+        }
+
+    }
+
+  }
+  .send-msg {
+      width: 100%;
+      visibility: visible;
+      z-index: 9999999999;
+      display: inline-block;
+      position: fixed; bottom: 0;
+
+      .input {
+        display: flex;
+        background-color: darkgray;
+
+        input[type="text"] {
+          height: 54px;
+          padding-left: 13px;
+          width: calc(100vw - 168px);
+        }
+
+        input[type="submit"] {
+          width: 200px;
+          background-color: lightgrey;
+          border: none;
+          height: 54px;
+          font-weight: 900;
+          margin-left: -4px;
+        }
+      }
+    }
+}

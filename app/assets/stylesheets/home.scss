@@ -1,0 +1,129 @@
+.container.home {
+  h1 {
+    text-align: center;
+    margin: 0; padding: 0;
+    color: rgba(227, 163, 90, 0.77);
+  }
+
+  .page-slider {
+    z-index: 0;
+    width: 100%;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+    background: #120103;
+  }
+
+  .columns {
+    padding: 2em;
+  }
+
+  header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 900;
+    position: absolute;
+    background: #2C2C2C;
+    box-shadow: 0 0.5em 1em #111;
+  }
+
+  header label {
+    color: lightgoldenrodyellow;
+    display: inline-block;
+    line-height: 4.85em;
+    font-weight: bold;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0 1em;
+  }
+
+  header label:hover { background: #2e353b; }
+
+  .slide {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    overflow-y: scroll;
+    top: 0;
+    left: 100%;
+    z-index: 10;
+    padding: 8em 1em 0;
+    background-color: #252525;
+    background-position: 50% 50%;
+    background-size: cover;
+    transition: left 0s 0.75s;
+
+    h1 {
+      padding: 1.3em;
+      color:  #d99618;
+      letter-spacing: -1.4px;
+    }
+  }
+
+  [id^="slide"]:checked + .slide {
+    left: 0;
+    z-index: 100;
+    transition: left 0.65s ease-out;
+  }
+
+  [id^="slide"]:checked + .slide h1 {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.5s 0.5s;
+  }
+
+  .perk {
+    padding: 1em;
+    margin: 7px;
+    height: 625px;
+    border-radius: 6px;
+    border: 2px solid #2b2b2b;
+    box-shadow: 1px 5px 6px rgba(0,0,0,0.5);
+
+    &:hover {
+      box-shadow: 2px 6px 16px rgba(0,0,0,0.5);
+    }
+
+    h3 {
+      font-size: 16px;
+      line-height: 3.3;
+      font-weight: 700;
+      padding-bottom: 40px;
+      color: lightgoldenrodyellow;
+
+      span {
+        img {
+          height: 24px;
+          width: 24px;
+          margin: 0 2px;
+          position: relative; top: 6px;
+        }
+      }
+    }
+
+    .image {
+      img {
+        width: 16vw;
+        height: 16vw;
+        background-color: white;
+      }
+    }
+
+    ol, p, ul {
+      font-size: 13.7px;
+      line-height: 1.2;
+      padding: 10px 0;
+      color: whitesmoke;
+      font-weight: 900;
+      font-family: Arial;
+      letter-spacing: 0.3px;
+
+      li {
+        margin: 15px 0;
+      }
+    }
+  }
+}

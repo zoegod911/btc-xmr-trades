@@ -1,0 +1,287 @@
+<div class="trade-show">
+  <div class="trade-status">
+    <div class="info">
+      <span>Trade ID <%= @trade.id %> </span>
+      <h1>
+        <%= "#{@trade.trade_escrow.coin_amount} #{@trade.coin_type} for #{@trade.target_amount} #{@trade.offering.target_currency} #{@trade.offering.trade_item.title}" %><br><%= @trade.status.titleize %>
+      </h1>
+    </div>
+
+    <h3>
+      <% if @trade.active? %>
+        Expires In: <%= @trade.time_until_expiry %>
+      <% elsif @trade.completed? %>
+        Trade Complete
+      <% elsif @trade.disputed? %>
+        Under Dispute
+      <% elsif @trade.expired? %>
+        Expired
+      <% end %>
+    </h3>
+  </div>
+
+  <div class="trade <%= 'completed' if @trade.completed? %> <%= 'disputed' if @trade.disputed? %> <%= 'expired' if @trade.expired? && @address.released %> ">
+    <div class="trade-chat">
+
+      <div class="messages">
+        <% @trade_chat.trade_chat_messages.includes(:sender).each do |msg| %>
+          <% is_sender = msg.sender_id == current_user.trader.id %>
+          <% msg_class = is_sender ? 'start' : 'reply' %>
+
+          <div class="msg <%= msg_class %>">
+            <% if is_sender %>
+              <div class="sent-by">
+                <div class="avatar"><%= image_tag 'default_avatar.png' %></div>
+
+                <div class="username">
+                  <% unless (msg.sender.user.admin? || msg.sender.user.moderator?) %>
+                    <%= link_to msg.sender.username, trader_path(msg.sender) %>
+                  <% else %>
+                    <b><%= msg.sender.username %></b>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="msg-content">
+              <div class="bubble">
+                <%  direction = is_sender ? 'tri-right left-in' : ' tri-right right-in' %>
+                <div class="talk-bubble <%= direction %> <%= 'system' if (msg.sender.user.admin? || msg.sender.user.moderator?) %>">
+                  <div class="talktext">
+                    <p><%= simple_format msg.decrypted %></p>
+                  </div>
+
+                  <% if msg.attachment.present? %>
+                    <ol class="attachments">
+                      <% msg.attachment.attachments.each do |f| %>
+                        <li>
+                          <%= link_to f.filename.to_s, rails_blob_path(f.blob), target: '_blank' %>
+                        </li>
+                      <% end %>
+                    </ol>
+                  <% end %>
+                </div>
+
+                <div class="sent-at">
+                  <span>Sent: </span>
+                  <%= msg.created_at.strftime('%A, %d %b %Y %l:%M %p') %>
+                </div>
+              </div>
+            </div>
+            <% unless is_sender %>
+              <div class="sent-by">
+                <div class="avatar">
+                  <%= image_tag 'default_avatar.png' %>
+                </div>
+                <div class="username">
+                  <% unless (msg.sender.user.admin? || msg.sender.user.moderator?) %>
+                    <%= link_to msg.sender.username, trader_path(msg.sender) %>
+                  <% else %>
+                    <b><%= msg.sender.username %></b>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% is_buyer = current_user.trader.id == @trade.buyer_id %>
+    <% is_seller = current_user.trader.id == @trade.seller.id %>
+    <div class="trade-actions">
+      <% if @trade.active? %>
+        <% if @trade.buyer_id == current_user.trader.id %>
+          <div class="btns">
+            <%= form_tag(request_extension_for_trade_path(@trade)) do %>
+              <%= submit_tag 'Request Extension', class: 'btn btn-primary' %>
+            <% end %>
+
+            <% unless @trade.status == 'user_paid' && @address.active == false %>
+              <%= form_tag(user_paid_trade_path(@trade)) do %>
+                <%= submit_tag 'Mark Payment Sent', class: 'btn btn-primary' %>
+              <% end %>
+            <% end %>
+          </div>
+
+        <% elsif @trade.seller.id == current_user.trader.id %>
+          <div class="btns">
+            <% if @trade.status == 'user_paid' %>
+              <%= form_tag(mark_completed_trade_path(@trade)) do %>
+                <%= submit_tag 'Mark Payment Received', class: 'btn btn-primary' %>
+              <% end %>
+            <% end %>
+
+            <%= form_tag(extend_expiry_for_trade_path(@trade), method: :POST) do %>
+              <%= submit_tag 'Extend Expiry', class: 'btn btn-primary' %>
+            <% end %>
+          </div>
+        <% end %>
+
+
+      <% elsif @trade.expired? == false %>
+
+        <% if @trade.disputed? == false %>
+          <div class="btns">
+            <%= link_to 'Open a Dispute', new_trade_dispute_path(t_id: @trade.id), class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+
+        <% role = is_seller ? 'seller' : 'buyer' %>
+        <% if @trade.complete? && @trade.send(:"#{role}_reviewed?") == false %>
+          <%= form_tag(reviews_path, method: :POST) do %>
+            <%= hidden_field_tag 'review[trade_id]', @trade.id %>
+            <%= hidden_field_tag 'review[reviewer_id]', current_user.trader.id %>
+            <%= hidden_field_tag('review[reviewee_id]', @trade.buyer_id) if is_seller %>
+            <%= hidden_field_tag('review[reviewee_id]', @trade.seller.id) if is_buyer %>
+
+            <h1>Leave a Review</h1>
+
+            <div class="field text">
+              <%= text_area_tag 'review[content]', nil, rows: 10, col: 20, placeholder: 'Describe your trading experience with this trader. What went well, how fast or long did the transaction take? etc.' %>
+            </div>
+
+            <div class="field switch">
+              <label name="review[trusted]" class="form-switch">
+                <input type="checkbox" name="review[trusted]">
+                <i class="form-icon"></i> Trusted?
+              </label>
+            </div>
+
+            <div class="field">
+              <%= submit_tag 'Submit', class: 'topcoat-button' %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% if !@trade.expired? %>
+
+        <% if is_seller && @address.active %>
+          <div class="qr">
+            <div class="img-wrap">
+              <%= image_tag @trade.qr_code.url %>
+            </div>
+
+            <div class="deposit-msg">
+              Deposit <%= @trade.trade_escrow.coin_amount %> <%= @trade.offering.coin_type %>
+              into: <br><br>
+
+              <b><%= @trade.trade_escrow.coin_address %></b>
+
+              <br> <br>
+              to populate the trade. Ensure acceptable proof of ownership from the
+              buyer beforehand to prevent unneccesary fees. The buyer is advised
+              not to send full payment until the trade is populated.
+            </div>
+
+          </div>
+        <% end %>
+      <% end %>
+
+      <% returns_to = @trade.trade_escrow.release_to_id == @trade.seller.id ? 'seller' : 'buyer' %>
+      <% unless @address.released %>
+        <div class="populated">
+          <% is_populated = !@address.active %>
+          <% if is_buyer %>
+            <% if is_populated %>
+              <p>
+                The seller has deposited <%= @trade.coin_amount %> <%= @trade.coin_type %>
+                into escrow for this trade. It is safe to deliver your goods.
+              </p>
+            <% else %>
+              <p class="not">
+                The seller has not yet deposited the <%= @trade.coin_amount %> <%= @trade.coin_type %>
+                into escrow. Be advised that you may deliver proof of ownership
+                of the goods, but do not send the goods until we've verified receipt
+                of the coins in escrow.
+              </p>
+            <% end %>
+          <% elsif is_seller %>
+            <% if is_populated %>
+              <p>
+                You have deposited <%= @trade.coin_amount %> <%= @trade.coin_type %>
+                into escrow for this trade.
+              </p>
+            <% else %>
+              <p class="not">
+                You have not yet deposited the <%= @trade.coin_amount %> <%= @trade.coin_type %>
+                into escrow.
+              </p>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="destination">
+          <h3>Set Your Destination Address</h3>
+
+          <p>The coins will be released to the: <b><%= returns_to %></b></p>
+
+          <% if is_seller && returns_to == 'buyer' %>
+            <p>
+              The coins will be sent to the buyer, when you confirm the payment
+              received.
+            </p>
+          <% elsif is_buyer && returns_to == 'seller' %>
+            <p>
+              The coins will be sent to you, when you have marked the payment sent
+              & the seller confirms receipt. If you have marked sent and the seller
+              does not confirm, but has taken payment, open a dispute and contact
+              Pangolin Support.
+            </p>
+          <% end %>
+
+          <div class="form-group">
+            <% role = current_user.trader.id == @trade.seller.id ? 'seller' : 'buyer' %>
+
+            <% if @trade.trade_escrow.destination[role] %>
+              <p>
+                Your Current Destination: <br><br>
+                <b>
+                  <%= @trade.trade_escrow.destination[role] %>
+                </b>
+              </p>
+            <% end %>
+
+            <%= form_tag(destination_for_trade_path(@trade), method: :POST) do %>
+              <%= label_tag "trade_escrow[destination][#{role}]", "#{@trade.offering.coin_type} Address", class: 'form-label' %>
+              <%= text_field_tag "trade_escrow[destination][#{role}]", nil,  class: 'form-input' %>
+
+              <%= submit_tag "Set Destination", class: 'btn btn-primary' %>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <p>
+          <%= "#{@trade.coin_amount} #{@trade.coin_type}" %> has been released
+          to the <b><%= returns_to %></b>.
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="send-msg">
+    <%= form_tag(add_message_trade_chat_path, method: :POST, multipart: true) do %>
+      <div class="input">
+        <%= text_field_tag 'trade_chat_message[content]' %>
+
+        <%= hidden_field_tag 'trade_chat_message[sender_id]', current_user.trader.id %>
+        <%= hidden_field_tag 'trade_chat_message[trade_chat_id]', @trade_chat.id %>
+
+        <div class="attachment">
+          <%= label_tag 'attachment[]' do  %>
+            <%= image_tag 'paperclip.png' %>
+          <% end %>
+        </div>
+        <%= file_field_tag 'attachment[]', multiple: true %>
+
+        <%= submit_tag 'Send' %>
+      </div>
+    <% end %>
+
+    <% if @trade.completed? || @trade.expired? %>
+      <div class="disable-overlay">
+      </div>
+    <% end %>
+  </div>
+</div>

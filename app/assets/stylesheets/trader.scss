@@ -1,0 +1,129 @@
+
+.trader-show {
+
+  header {
+    display: block;
+    padding: 70px 0;
+    text-align: center;
+    background-color: rgba(0,0,0,0.8);
+
+    .avatar {
+      width: 25vw;
+      height: 25vw;
+    }
+
+    .username {
+      padding: 1em;
+    }
+  }
+
+  .trader-info {
+    width: 100%;
+    margin-bottom: 1em;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    position: relative; left: -9px;
+
+
+    .badge {
+      width: auto;
+      margin: 2em 0;
+      line-height: 1.4;
+      color: blanchedalmond;
+
+      span {
+        margin: 1em;
+        font-weight: 900;
+        border-radius: 27px;
+        padding: 0.7em 1.6em;
+        background-color: rgba(#1F3263,0.5);
+      }
+
+      &.timestamp {
+        span {
+          background-color: rgba(#053934,0.5);
+        }
+      }
+    }
+  }
+
+  .buyer-and-seller-specs {
+    width: 100%;
+    display: flex;
+
+    .btns {
+      width: 100%;
+      display: flex;
+
+      div {
+        width: 50%;
+        padding: 1em 0;
+        text-align: center;
+        display: inline-block;
+
+        &:first-of-type {
+          border-right: 1px solid black;
+        }
+
+        &.buyer {
+          background-color: rgba(#1F3263, 0.5);
+          &:hover {
+            background-color: rgba(#1F3263, 0.8);
+          }
+        }
+
+        &.seller {
+          background-color: rgba(#053934, 0.5);
+          &:hover {
+            background-color: rgba(#053934, 0.8);
+          }
+        }
+
+        a {
+          color: whitesmoke;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+
+          &.active {
+            font-weight: 900;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .trader-reviews {
+    min-height: 26.9vh;
+    background: black;
+    .review {
+      color: white;
+      padding: 2em;
+      display: flex;
+      justify-content: space-around;
+      background-color: rgba(0,0,0,0.8);
+
+      .trusted {
+        img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+
+  .no-reviews {
+    padding: 1em;
+    min-height: 40vh;
+    background-color: rgba(0, 0, 0, 0.17);
+    p {
+      margin-top: 2em;
+      color: whitesmoke;
+      text-align: center;
+    }
+  }
+}

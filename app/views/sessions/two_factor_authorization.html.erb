@@ -1,0 +1,16 @@
+<div class="container two-factor-auth">
+  <h1>Two-Factor Authorization</h1>
+
+  <div class="pgp-msg">
+    <dd><pre><%=  @message.strip %></pre></dd>
+  </div>
+
+  <%= form_tag(validate_2fa_path) do %>
+    <div class="field">
+      <%= label_tag 'security_code', 'Security Code' %>
+      <%= text_field_tag 'security_code', nil, placeholder: 'Enter security code'  %>
+      <%= submit_tag 'Validate' %>
+    </div>
+  <% end %>
+
+</div>

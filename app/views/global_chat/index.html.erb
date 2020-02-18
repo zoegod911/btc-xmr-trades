@@ -1,0 +1,242 @@
+<div class="home-main global-trade">
+  <div class="chatroom-status">
+    <h1>
+      <%= pluralize(@present_traders.count, 'Trader') %> | <%= pluralize(@requests.count, 'Trade Requests') %>
+    </h1>
+  </div>
+
+  <div class="send-msg">
+    <%= form_tag(global_chat_send_message_path(@chat), method: :PATCH,) do %>
+      <div class="input">
+        <%= text_field_tag 'global_chat_message[content]' %>
+        <%= submit_tag 'Send' %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="global-chat">
+    <div class="global-trade-chatroom">
+
+      <div class="messages">
+        <% @chat.global_chat_messages.includes(:sender).each do |msg| %>
+          <% is_sender = msg.sender_id == current_user.trader.id %>
+          <% msg_class = is_sender ? 'start' : 'reply' %>
+
+          <div class="msg <%= msg_class %>">
+            <% if is_sender %>
+              <div class="sent-by">
+                <div class="avatar"><%= image_tag 'default_avatar.png' %></div>
+
+                <div class="username">
+                  <% unless (msg.sender.user.admin? || msg.sender.user.moderator?) %>
+                    <div class="popover popover-right">
+                      <%= link_to msg.sender.username, trader_path(msg.sender) %>
+                      <div class="popover-container">
+                        <div class="card">
+                          <div class="card-header">
+                            <% if msg.sender.offerings.count > 0 %>
+                              Current Offers
+                            <% end %>
+                          </div>
+                          <div class="card-body">
+                            <% if msg.sender.offerings.count > 0 %>
+                              <ul>
+                                <% msg.sender.offerings.each do |o| %>
+                                  <li>
+                                    <%= link_to "Seeking #{o.trade_item.title} for #{o.coin_type}. Min #{o.minimum_price} - Max #{o.maximum_price} #{o.target_currency}", offering_path(o) %>
+                                <% end %>
+                              </ul>
+                            <% end %>
+                          </div>
+                          <div class="card-footer">
+                            <div class="btn-group">
+                              <div class="btn btn-primary">
+                                <%= link_to 'View Profile', trader_path(msg.sender) %>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% else %>
+                    <div class="popover popover-right">
+                      <%= link_to trader_path(msg.sender) do %>
+                        <b><%= msg.sender.username %></b>
+                      <% end %>
+                      <div class="popover-container">
+                        <div class="card">
+                          <div class="card-header">
+                            <% if msg.sender.offerings.count > 0 %>
+                              Current Offers
+                            <% end %>
+                          </div>
+                          <div class="card-body">
+                            <% if msg.sender.offerings.count > 0 %>
+                              <ul>
+                                <% msg.sender.offerings.each do |o| %>
+                                  <li>
+                                    <%= link_to "Seeking #{o.trade_item.title} for #{o.coin_type}. Min #{o.minimum_price} - Max #{o.maximum_price} #{o.target_currency}", offering_path(o) %>
+                                <% end %>
+                              </ul>
+                            <% end %>
+                          </div>
+                          <div class="card-footer">
+                            <div class="btn-group">
+                              <div class="btn btn-primary">
+                                <%= link_to 'View Profile', trader_path(msg.sender) %>
+                              </div>
+                              <div class="btn btn-priamry">
+                                Send Trade Request
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="msg-content">
+              <div class="bubble">
+                <%  direction = is_sender ? 'tri-right left-in' : ' tri-right right-in' %>
+                <div class="talk-bubble <%= direction %> <%= 'system' if (msg.sender.user.admin? || msg.sender.user.moderator?) %>">
+                  <div class="talktext">
+                    <p><%= simple_format msg.content %></p>
+                  </div>
+                </div>
+
+                <div class="sent-at">
+                  <span>Sent: </span>
+                  <%= msg.created_at.strftime('%A, %d %b %Y %l:%M %p') %>
+                </div>
+              </div>
+            </div>
+            <% unless is_sender %>
+              <div class="sent-by">
+                <div class="avatar">
+                  <%= image_tag 'default_avatar.png' %>
+                </div>
+                <div class="username">
+                  <% unless (msg.sender.user.admin? || msg.sender.user.moderator?) %>
+
+                    <div class="popover popover-left">
+                      <%= link_to msg.sender.username, trader_path(msg.sender) %>
+                      <div class="popover-container">
+                        <div class="card">
+                          <div class="card-header">
+                            <% if msg.sender.offerings.count > 0 %>
+                              Current Offers
+                            <% end %>
+                          </div>
+                          <div class="card-body">
+                            <% if msg.sender.offerings.count > 0 %>
+                              <ul>
+                                <% msg.sender.offerings.each do |o| %>
+                                  <li>
+                                    <%= link_to "Seeking #{o.trade_item.title} for #{o.coin_type}. Min #{o.minimum_price} - Max #{o.maximum_price} #{o.target_currency}", offering_path(o) %>
+                                <% end %>
+                              </ul>
+                            <% end %>
+                          </div>
+                          <div class="card-footer">
+                            <div class="btn-group">
+                              <div class="btn btn-primary">
+                                <%= link_to 'View Profile', trader_path(msg.sender) %>
+                              </div>
+                              <div class="btn btn-priamry">
+                                Send Trade Request
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% else %>
+                    <div class="popover popover-left">
+                      <%= link_to trader_path(msg.sender) do %>
+                        <b><%= msg.sender.username %></b>
+                      <% end %>
+                      <div class="popover-container">
+                        <div class="card">
+                          <div class="card-header">
+                            <% if msg.sender.offerings.count > 0 %>
+                              Current Offers
+                            <% end %>
+                          </div>
+                          <div class="card-body">
+                            <% if msg.sender.offerings.count > 0 %>
+                              <ul>
+                                <% msg.sender.offerings.each do |o| %>
+                                  <li>
+                                    <%= link_to "Seeking #{o.trade_item.title} for #{o.coin_type}. Min #{o.minimum_price} - Max #{o.maximum_price} #{o.target_currency}", offering_path(o) %>
+                                <% end %>
+                              </ul>
+                            <% end %>
+                          </div>
+                          <div class="card-footer">
+                            <div class="btn-group">
+                              <div class="btn btn-primary">
+                                <%= link_to 'View Profile', trader_path(msg.sender) %>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="lists">
+        <div class="trader-list">
+          <% @present_traders.each do |trader| %>
+            <div class="trader">
+              <div class="led-green"></div>
+              <div class="username">
+                <div class="popover popover-left">
+                  <%= link_to trader.username, trader_path(trader) %>
+                  <div class="popover-container">
+                    <div class="card">
+                      <div class="card-header">
+                        <% if trader.offerings.count > 0 %>
+                          Current Offers
+                        <% end %>
+                      </div>
+                      <div class="card-body">
+                        <% if trader.offerings.count > 0 %>
+                          <ul>
+                            <% trader.offerings.each do |o| %>
+                              <li>
+                                <%= link_to "Seeking #{o.trade_item.title} for #{o.coin_type}. Min #{o.minimum_price} - Max #{o.maximum_price} #{o.target_currency}", offering_path(o) %>
+                            <% end %>
+                          </ul>
+                        <% end %>
+                      </div>
+                      <div class="card-footer">
+                        <div class="btn-group">
+                          <div class="btn btn-primary">
+                            <%= link_to 'View Profile', trader_path(trader) %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

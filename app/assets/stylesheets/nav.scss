@@ -1,0 +1,50 @@
+header.navbar {
+  padding: 0;
+  height: 80px;
+  background-color: #8E8B82;
+  border-bottom: 1px solid #4A4A4A;
+
+  .mascot {
+    margin-right: 1vw;
+    display: inline-flex;
+
+    img { width: 80px; }
+  }
+
+  .avatar {
+    margin: 0 0.4em 0 0.2em;
+    width: 64px; height: 64px;
+    img { width: 64px; height: 64px; }
+  }
+
+  a.btn.btn-link {
+    color: lightgoldenrodyellow;
+    &:hover { color: goldenrod; }
+  }
+
+  .logo-text {
+    display: inline-flex;
+    img {
+      width: 30vw;
+      max-width: 230px;
+    }
+  }
+  .drop-menu {
+    background-color: rgba(#8E8B82, 0.98);
+    position: relative;
+    text-align: center;
+    left: -385px;
+    width: 600px;
+    padding: 3em;
+
+    a {
+      font-weight: 900
+    }
+
+    ul {
+      list-style: square;
+      li:last-of-type { list-style: none; }
+    }
+  }
+
+}

@@ -1,0 +1,236 @@
+<div class="trades-dashboard">
+  <div class="dashboard-header">
+    <h1>Trader's Dashboard</h1>
+  </div>
+
+  <div class="buying-and-selling">
+    <div class="buying">
+      <%= link_to 'Buying', trades_path(buying: true), class: "#{'active' if params[:buying]}" %>
+    </div>
+
+    <div class="selling">
+      <%= link_to 'Selling', trades_path(selling: true), class: "#{'active' if params[:selling]}" %>
+    </div>
+  </div>
+
+  <div class="trader-details">
+    <% if params[:selling] %>
+      <div class="post-trade">
+        <%= link_to 'Post a Trade', new_offering_path, class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+
+
+    <div class="open-trades">
+      <h3>Open Trades</h3>
+
+      <div class="trades">
+        <% if @active_trades.present? %>
+        <table class="rwd-table">
+          <thead>
+            <tr>
+              <th>Trade ID</th>
+              <th>Status</th>
+              <th>Seller</th>
+              <th>Trade Item</th>
+              <th>Coin Amount</th>
+              <th>Cryptocurrency</th>
+              <th>Expires In</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @active_trades.each do |trade| %>
+            <tr>
+              <td  data-th="Trade Id">
+                <%= link_to trade.id, trade_path(trade) %>
+              </td>
+              <td  data-th="Status">
+                <%= trade.status.titleize%>
+              </td>
+              <td  data-th="Seller">
+                <%= link_to trade.seller.username, trader_path(trade.seller) %>
+              </td>
+              <td  data-th="Trade Item">
+                <%= trade.offering.trade_item.title %>
+              </td>
+              <td  data-th="Coin Amount">
+                <%= trade.coin_amount %>
+              </td>
+              <td  data-th="Cryptocurerncy">
+                <%= trade.coin_type %>
+              </td>
+              <td  data-th="Expires In">
+                <%= trade.time_until_expiry %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+
+        </table>
+        <% else %>
+        <div class="no-results">
+          <p>No Currently Active Trades.</p>
+        </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% if params[:selling] %>
+      <div class="active-offers">
+        <h3>Active Offers</h3>
+
+        <% if current_user.trader.offerings.present? %>
+          <table class="rwd-table">
+            <thead>
+              <tr>
+                <th>Offering ID</th>
+                <th>Cryptocurrency</th>
+                <th>Trade Item</th>
+                <th>Price Per Coin</th>
+                <th>Minimum To Trade</th>
+                <th>Maximum Allowed</th>
+                <th># of Trades Completed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% current_user.trader.offerings.each do |offer| %>
+                <tr>
+                  <td  data-th="Trade Id">
+                    <%= link_to offer.id, offering_path(offer) %>
+                  </td>
+                  <td  data-th="Cryptocurerncy">
+                    <%= offer.coin_type %>
+                  </td>
+                  <td  data-th="Trade Item">
+                    <%= offer.trade_item.title %>
+                  </td>
+                  <td  data-th="Price Per Coin">
+                    <%= humanized_money_with_symbol Money.new(offer.price_per_coin * 100, offer.target_currency) %> <%= offer.target_currency %>
+                  </td>
+                  <td  data-th="Minimum to Trade">
+                    <%= humanized_money_with_symbol Money.new(offer.minimum_price * 100, offer.target_currency) %> <%= offer.target_currency %>
+                  </td>
+                  <td  data-th="Maximum Allowed">
+                    <%= humanized_money_with_symbol Money.new(offer.maximum_price * 100, offer.target_currency) %> <%= offer.target_currency %>
+                  </td>
+                  <td  data-th="# of Trades Completed">
+                    <%= offer.minimum_trades_completed %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+
+          </table>
+        <% else %>
+          <div class="no-results">
+            <p>No Listed Trades.</p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+
+    <% if params[:buying] %>
+      <div class="completed-trades">
+        <h3>Completed Trades</h3>
+
+        <div class="trades">
+          <% if @completed_trades.present?  %>
+            <table class="rwd-table">
+              <thead>
+                <tr>
+                  <th>Trade ID</th>
+                  <th>Status</th>
+                  <th>Buyer</th>
+                  <th>Trade Item</th>
+                  <th>Coin Amount</th>
+                  <th>Cryptocurrency</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @completed_trades.each do |trade| %>
+                  <tr>
+                    <td  data-th="Trade Id">
+                      <%= link_to trade.id, trade_path(trade) %>
+                    </td>
+                    <td  data-th="Status">
+                      <%= trade.status.titleize%>
+                    </td>
+                    <td  data-th="Buyer">
+                      <%= link_to trade.buyer.username, trader_path(trade.buyer) %>
+                    </td>
+                    <td  data-th="Trade Item">
+                      <%= trade.offering.trade_item.title %>
+                    </td>
+                    <td  data-th="Coin Amount">
+                      <%= trade.coin_amount %>
+                    </td>
+                    <td  data-th="Cryptocurerncy">
+                      <%= trade.coin_type %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+
+            </table>
+          <% else %>
+            <div class="no-results">
+              <p>No Completed Trades.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+
+    <div class="disputed-trades">
+      <h3>Disputes</h3>
+
+      <div class="trades">
+        <% if @disputed_trades.present?  %>
+          <table class="rwd-table">
+            <thead>
+              <tr>
+                <th>Trade ID</th>
+                <th>Status</th>
+                <th>Buyer</th>
+                <th>Trade Item</th>
+                <th>Coin Amount</th>
+                <th>Cryptocurrency</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @disputed_trades.each do |trade| %>
+                <tr>
+                  <td  data-th="Trade Id">
+                    <%= link_to trade.id, trade_path(trade) %>
+                  </td>
+                  <td  data-th="Status">
+                    <%= trade.status.titleize%>
+                  </td>
+                  <td  data-th="Buyer">
+                    <%= link_to trade.buyer.username, trader_path(trade.buyer) %>
+                  </td>
+                  <td  data-th="Trade Item">
+                    <%= trade.offering.trade_item.title %>
+                  </td>
+                  <td  data-th="Coin Amount">
+                    <%= trade.coin_amount %>
+                  </td>
+                  <td  data-th="Cryptocurerncy">
+                    <%= trade.coin_type %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+
+          </table>
+        <% else %>
+          <div class="no-results">
+            <p>No Open Disputes.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

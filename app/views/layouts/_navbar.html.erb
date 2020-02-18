@@ -1,0 +1,60 @@
+<header class="navbar">
+  <section class="navbar-section">
+    <div class="logo">
+      <div class="mascot">
+        <%= link_to root_path do %>
+          <%= image_tag 'pangolin.png'  %>
+        <% end %>
+      </div>
+
+      <div class="logo-text">
+        <%= link_to root_path do %>
+          <%= image_tag 'logo-text.png'  %>
+        <% end %>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="navbar-center">
+  </section>
+
+  <section class="navbar-section">
+    <% unless current_user %>
+      <%= link_to 'Login', new_session_path, class: 'btn btn-link' %>
+      <%= link_to 'Sign Up', new_registration_path, class: 'btn btn-link' %>
+    <% else %>
+      <%= link_to 'Exchange', exchange_path, class: 'btn btn-link' %>
+      <%= link_to 'Global Chat', global_chat_index_path, class: 'btn btn-link' %>
+      <%= link_to 'Dashboard', trades_path(buying: true), class: 'btn btn-link' %>
+      <% notifications = current_user.notifications %>
+      <% notif_count = current_user.notifications.count %>
+      <div class="popover popover-bottom">
+        <%= link_to trader_path(current_user.trader) do %>
+          <% css_class = notif_count > 0 ? 'avatar avatar-xl badge' : 'avatar avatar-xl' %>
+          <figure class="<%= css_class %>" <%= "data-badge=#{notif_count}" if notif_count > 0 %>>
+            <%= image_tag 'default_avatar.png' %>
+          </figure>
+        <% end %>
+        <div class="popover-container">
+          <div class="drop-menu">
+            <% if notifications.count > 0 %>
+              <span class="badge" data-badge="<%= notif_count %>">
+                Notifications
+              </span>
+            <% end %>
+            <ul>
+              <% notifications.each do |notif| %>
+                <li><%= link_to notif.message, notification_path(notif), class: "btn btn-link" %></li>
+              <% end %>
+              <div class="divider"></div>
+              <li><%= link_to 'Sign Out', logout_path, class: 'btn btn-link' %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <% end %>
+  </section>
+
+</header>

@@ -1,0 +1,12 @@
+update_crypto_prices:
+  cron: '20,40 * * * *'
+  class: 'CryptoTickerWorker'
+  queue: default
+expire_chat_members:
+  cron: '*/10 * * * *'
+  class: 'InvalidateGlobalChatTradersWorker'
+  queue: default
+expire_trades:
+  cron: '*/10 * * * *'
+  class: 'ExpireTradeWorker'
+  queue: default

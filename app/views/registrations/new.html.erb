@@ -1,0 +1,56 @@
+<div class="container after-nav login-page">
+  <div class="columns gapless">
+    <div class="column col-6 left-sales-pitch">
+
+      <ul>
+        <li>Sell or Trade Crypto for Money Transfers & Digital Goods.</li>
+        <li>Fully anonymous; no identification or personal information.</li>
+        <li>Walletless Payments: Deposit Crypto 1-Hour Escrow</li>
+        <li>Authentic & Carded Goods are allowed. Simply mark them as such.</li>
+      </ul>
+    </div>
+
+    <div class="column col-6 sign-up-form">
+      <div class="container">
+        <h3>Sign Up</h3>
+
+        <%= form_for User.new, url: registrations_path do |f| %>
+
+          <div class="form-group">
+            <%= f.label :username, class: 'form-label' %>
+            <%= f.text_field :username, class: 'form-input' %>
+          </div>
+
+
+          <div class="passwords">
+            <div class="form-group">
+              <%= f.label :password, 'Password', class: 'form-label' %>
+              <%= f.password_field :password, class: 'form-input' %>
+            </div>
+            <div class="form-group">
+              <%= label_tag 'user[password_confirmation]', 'Confirm Password', class: 'form-label' %>
+              <%= password_field_tag 'user[password_confirmation]', nil, class: 'form-input' %>
+            </div>
+          </div>
+
+          <div class="form-group pgp">
+
+            <div class="notice">
+              For 2-Factor Authorization
+            </div>
+
+            <%= f.label :pgp_public_key, 'PGP Public Key' %>
+            <%= f.text_area :pgp_public_key, class: 'form-input', placeholder: 'Enter PGP Public Key Block', cols: 30, rows: 20 %>
+          </div>
+
+
+          <div class="submit">
+            <%= f.submit 'Send', class: 'btn btn-large' %>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>

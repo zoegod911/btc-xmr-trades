@@ -1,0 +1,22 @@
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: 127.0.0.1
+  username: postgres
+  password: postgres
+
+development:
+  <<: *default
+  database: pangolin_development
+
+test:
+  <<: *default
+  database: pangolin_test
+
+production:
+  <<: *default
+  database: pangolin_production
+  username: pangolin_admin
+  password: <%= ENV['GLOBAL_DB_PASS'] || Rails.application.credentials.db_password %>

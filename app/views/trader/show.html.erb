@@ -1,0 +1,98 @@
+<div class="home-main">
+  <div class="trader-show">
+    <% if current_user.authority? %>
+      <%= render partial: 'admin/layouts/trader_panel', locals: { trader: @trader } %>
+    <% end %>
+
+    <header class="avatar-img">
+      <div class="avatar">
+        <%= image_tag 'default_avatar.png' %>
+      </div>
+
+      <div class="username">
+        <h3><%= @trader.username %></h3>
+
+        <span>Trust Score: </span><b><%= @trader.trust_score %></b>
+      </div>
+
+      <div class="trader-info">
+        <div class="total-completed badge">
+          <span>Total Completed Trades: <%= @trader.total_completed_trades %> </span>
+        </div>
+
+        <div class="timestamp badge">
+          <span>Trader Since: <%= @trader.created_at.strftime('%b %d, %Y') %> </span>
+        </div>
+      </div>
+    </header>
+
+
+    <div class="buyer-and-seller-specs">
+      <div class="btns">
+        <div class="buyer">
+          <%= link_to 'Buyer', trader_path(id: @trader.id, buyer: true) %>
+        </div>
+
+        <div class="seller">
+          <%= link_to 'Seller', trader_path(id: @trader.id, seller: true) %>
+        </div>
+      </div>
+
+    </div>
+    <div class="trader-reviews">
+      <% if params[:buyer] %>
+        <%if @trader.reviews_as_buyer.size > 0 %>
+          <% @trader.reviews_as_buyer.each do |review| %>
+            <% trust_type = review.trusted ? 'trust' : 'distrust' %>
+            <div class="review <%= trust_type %>">
+              <div class="trusted">
+                <%= image_tag "icons/#{trust_type}-icon.png" %>
+              </div>
+              <div class="content">
+                <p><%= review.content %></p>
+              </div>
+              <div class="timestamp">
+                <div>
+                  <span>Review Date: </span> <%= review.created_at.strftime('%b %d, %Y') %>
+                </div>
+                <div>
+                  <span>Left by: </span> <%= review.username %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="no-reviews">
+            <p>No reviews yet...</p>
+          </div>
+        <% end %>
+      <% elsif params[:seller] %>
+        <% if @trader.reviews_as_seller.size > 0 %>
+          <% @trader.reviews_as_seller.each do |review| %>
+            <% trust_type = review.trusted ? 'trust' : 'distrust' %>
+            <div class="review <%= trust_type %>">
+              <div class="trusted">
+                <%= image_tag "icons/#{trust_type}-icon.png" %>
+              </div>
+              <div class="content">
+                <p><%=review.content %></p>
+              </div>
+              <div class="timestamp">
+                <div>
+                  <span>Review Date: </span><%= review.created_at.strftime('%b %d, %Y') %>
+                </div>
+                <div>
+                  <span>Left by: </span> <%= review.username %>
+                </div>
+              </div>
+            </div>
+        <% end %>
+      <% else %>
+        <div class="no-reviews">
+          <p>No reviews yet...</p>
+        </div>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+</div>

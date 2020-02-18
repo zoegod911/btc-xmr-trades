@@ -1,0 +1,60 @@
+.login-page {
+  .left-sales-pitch {
+    color: #FFF0DB;
+    min-height: 100vh;
+    background-color: #343434;
+
+    h3 {
+      font-size: 2em;
+      margin: 90px 15px 30px;
+      letter-spacing: -0.3px;
+    }
+
+    ul {
+      margin: 25vh 30px;
+
+      li {
+        margin: 40px 0;
+        list-style: devanagari;
+        font-family: Arial;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+        font-size: 16.7px;
+      }
+    }
+  }
+
+  .sign-up-form {
+    color: #BBB;
+    min-height: 100vh;
+    background-color: #5b5656;
+
+    h3 {
+      margin: 90px 20px 60px;
+    }
+
+    form {
+      width: 70%;
+      margin: 0 44px;
+
+      .form-group {
+        margin: 10px 0;
+
+        &.pgp {
+          margin-top: 25px;
+        }
+      }
+
+      .passwords {
+        margin: 30px 0 40px;
+
+        .form-group {
+          margin: 4px 0;
+        }
+      }
+    }
+  }
+
+
+}

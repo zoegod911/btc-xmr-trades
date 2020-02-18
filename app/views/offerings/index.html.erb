@@ -1,0 +1,131 @@
+<div class="container after-nav offering-list-all">
+  <div class="coin-exchange-home">
+    <h1>P2P Trades for Crypto</h1>
+
+    <div class="categories">
+      <nav class="nav">
+        <ul class="nav__menu">
+          <% @categories.each do |category| %>
+            <li class="nav__menu-item"><%= category.title %>
+              <ul class="nav__submenu">
+                <% category.trade_items.order(title: :asc).each do |item| %>
+                  <%= link_to exchange_path(t_id: item.id, target_amount: @trade_amount, coin_type: params[:coin_type]) do %>
+                    <li class="nav__submenu-item">
+                      <div class="thumb">
+                        <%= image_tag "logos/#{item.title.downcase.split(' ').join('_').delete('/')}" %>
+                      </div>
+                      <div class="title">
+                        <%= item.title %>
+                      </div>
+                     </li>
+                  <% end %>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+        </ul>
+      </nav>
+    </div>
+
+
+    <div class="active-trades">
+      <div class="header">
+        <% unless @trade_item.present? %>
+          <h3>Active Trades</h3>
+        <% else %>
+          <div class="trade-img">
+            <%= image_tag "logos/#{@trade_item.title.downcase.split(' ').join('_').delete('/')}", class: 'img-responsive' %>
+          </div>
+          <h3>Trades For <%= @trade_item.title %></h3>
+        <% end %>
+        <%= link_to 'Post a Trade', new_offering_path, class: 'btn btn-primary' %>
+      </div>
+
+      <div class="trade-amount">
+        <div class="how-much">
+          <%= form_tag(exchange_path, method: :GET) do %>
+            <div class="field fiat">
+              <div class="field">
+                <%= label_tag 'target_amount', 'How much?' %>
+                <%= number_field_tag 'target_amount', @trade_amount, step: 0.01, min: 0 %>
+              </div>
+
+              <div class="field">
+                <%= label_tag 'currency', 'Currency' %>
+                <%= select_tag 'currency', options_for_select(CURRENCIES, (params[:currency] || current_user.default_currency)) %>
+              </div>
+
+              <% if params[:t_id] %>
+                <%= hidden_field_tag('t_id', params[:t_id]) %>
+              <% end %>
+            </div>
+
+            <div class="field target-coin">
+              <%= label_tag 'coin_type', 'Target Coin' %>
+              <%= select_tag 'coin_type', options_for_select(COIN_TYPES, params[:coin_type]) %>
+            </div>
+
+            <div class="field form-group">
+              <label class="form-switch">
+               <input type="checkbox" name="grey_market" value="true" <%= 'checked' if params[:grey_market] %>>
+               <i class="form-icon"></i> Grey Market?
+             </label>
+           </div>
+
+           <div class="field form-group">
+             <%= submit_tag 'Filter', class: 'btn btn-primary' %>
+           </div>
+          <% end %>
+        </div>
+      </div>
+
+      <% if @offerings.count > 0 %>
+        <div class="trades">
+          <span class="count"><%= pluralize @offerings.count, 'Offering' %></span>
+
+          <div class="results">
+            <% @offerings.each do |o| %>
+              <div class="offering">
+                <div class="avatar <%= 'trade' if @trade_amount %>">
+                  <%= image_tag 'default_avatar.png' %>
+                </div>
+
+                <div class="statement <%= 'trade' if @trade_amount %>">
+                  <p>
+                    <span class="username">
+                      <%= link_to o.seller.username, trader_path(o.seller) %>
+                    </span> is offering
+                    <span class="coin-rate">
+                      <%= humanized_money_with_symbol Money.new(o.price_per_coin * 100, o.target_currency) %> <%= o.target_currency %>
+                    </span>
+                      per <%= o.coin_type %> for
+                    <span class="exchange-item"><%= o.trade_item.title %></span>
+                  </p>
+
+                  <span class="minimum-trades">
+                    <%= o.minimum_trades_completed %>+ Trades Required.
+                  </span>
+                </div>
+
+
+                <% if @trade_amount %>
+                  <div class="start-trade">
+                    <%= link_to 'Trade', offering_path(id: o.id, target_amount: @trade_amount), class: 'btn btn-primary' %>
+                  </div>
+
+                  <span class="payout">
+                    <% payout = o.payout_fiat(fiat_amount: @trade_amount) %>
+                    You will get <b><%= payout.round(2) %> <%= o.target_currency %></b>.
+                  </span>
+                <% end %>
+
+              </div>
+            <% end %>
+          </div>
+
+          <%= will_paginate @offerings %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

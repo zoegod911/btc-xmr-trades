@@ -1,0 +1,114 @@
+<div class="cointainer new-offering">
+
+  <%= form_for @offering, url: { action: 'update' } do |f| %>
+    <h1>Edit '<%= @trade_item.title %> for <%= @offering.coin_type %>' Trade</h1>
+
+    <div class="field">
+      <%= f.label :coin_type, 'Which cryptocurrency are you supplying?' %>
+
+      <div class="coin-payments">
+        <div class="bitcoin">
+          <div class="coin-img">
+            <%= image_tag 'bitcoin.png' %>
+          </div>
+
+          <div class="form-group">
+            <label class="form-radio">
+              <input type="radio" name="offering[coin_type]" value="BTC" <%= 'checked' if @offering.coin_type == 'BTC' %>>
+              <i class="form-icon"></i> Bitcoin
+            </label>
+          </div>
+
+        </div>
+
+        <div class="monero">
+          <div class="coin-img">
+            <%= image_tag 'monero.png' %>
+          </div>
+
+          <div class="form-group">
+            <label class="form-radio">
+              <input type="radio" name="offering[coin_type]" value="XMR" <%= 'checked' if @offering.coin_type == 'XMR' %>>
+              <i class="form-icon"></i> Monero
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :trade_item_id, 'What do you wish to trade for?' %>
+      <%= f.select :trade_item_id do  %>
+        <% build_options_for_trade_items.prepend([nil, '']).each do |opt| %>
+          <% opts = { value: opt.last } %>
+          <% opts.merge!(disabled: true)  if opt.last == nil %>
+          <% opts.merge!(selected: true)  if opt.last == @offering.trade_item_id %>
+
+
+          <%= content_tag(:option, opt.first, opts) %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <div class="form-group">
+        <label class="form-checkbox" style="display: inline-flex;">
+          <input type="checkbox" name="offering[grey_market]" value="true" <%= 'checked' if @offering.grey_market %>>
+          <i class="form-icon"></i> Allow Grey Market?
+        </label>
+      </div>
+    </div>
+
+
+    <div class="field">
+      <%= f.label :target_currency, 'Which fiat currency will you be using?' %>
+      <%= f.select :target_currency, options_for_select(CURRENCIES, @offering.target_currency) %>
+    </div>
+
+    <div class="field">
+      <ul class="current-coin-pricing">
+        <li class="btc"><span>Current BTC Price: </span>
+          <%= "#{@coin_pricing[:btc]} #{current_user.default_currency}" %>
+        </li>
+        <li class="xmr"><span>Current XMR Price: </span>
+          <%= "#{@coin_pricing[:xmr]} #{current_user.default_currency}" %>
+        </li>
+      </ul>
+
+      <%= f.label :price_per_coin, 'How much will you charge per coin? (This is the exchange rate)' %>
+      <%= f.number_field :price_per_coin, min: 0, step: 0.01 %>
+    </div>
+
+    <div class="field">
+      <%= f.label :description %>
+      <%= f.text_area :description, rows: 24, cols: 60 , placeholder: 'Describe terms of trade, the trading process, and requirements within this desscription.'%>
+    </div>
+
+    <div class="field">
+      <%= f.label :minimum_price, "What's the least amount you're willing to accept?" %>
+      <%= f.number_field :minimum_price, min: 0, step: 0.01 %>
+    </div>
+
+    <div class="field">
+      <%= f.label :maximum_price, "What's the maximum amount you're willing to accept?" %>
+      <%= f.number_field :maximum_price, min: 0, step: 0.01 %>
+    </div>
+
+    <div class="field">
+      <% if current_user.trader.completed_sales.count >= 25 %>
+        <%= f.label :minimum_trades_completed, 'How many successful trades does the buyer need to have?' %>
+        <%= f.number_field :minimum_trades_completed, min: 0, step: 1 %>
+      <% else %>
+        <%= hidden_field_tag 'offering[minimum_trades_completed]', 0 %>
+      <% end %>
+    </div>
+
+    <%= hidden_field_tag 'offering[seller_id]', current_user.trader.id %>
+
+    <div class="field">
+      <%= f.submit 'Submit', class: 'topcoat-button' %>
+    </div>
+  <% end %>
+
+
+</div>

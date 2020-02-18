@@ -1,0 +1,130 @@
+<% payout = @offering.payout_amount(fiat_amount: @target_amount) %>
+<div class="container">
+  <div class="columns">
+    <div class="col-10 col-mx-auto">
+
+      <div class="preview-trade">
+        <h1>
+          <%= @trade_item.title %> for <%= @offering.coin_type %>
+        </h1>
+        <% current_coin_price = @offering.current_coin_price(currency: @offering.target_currency) %>
+        <% exchange_rate = @offering.exchange_rate(current_price: current_coin_price) %>
+        <div class="trade-details">
+          <% unless current_user.trader.id == @offering.seller_id %>
+          <div class="trade-breakdown">
+            <div class="buyer">
+              <p>
+                <%= link_to current_user.username, trader_path(current_user.trader) %> will pay: <br><br>
+                <%= @target_amount %> <%= @offering.target_currency %><br> <%= @trade_item.title %>
+              </p>
+            </div>
+
+            <div class="seller">
+              <p>
+                <%= link_to @offering.seller.username, trader_path(@offering.seller) %> will send: <br><br>
+                <%= payout[:coin] %> <%= @offering.coin_type %><br> (<%= humanized_money_with_symbol payout[:fiat] %> or <%= humanized_money_with_symbol exchange_rate %> per coin).
+              </p>
+            </div>
+          </div>
+          <% else %>
+          <div class="seller">
+            <div class="trade-pricing">
+              <h3>
+                <span>Current Coin Price: </span>
+                <%= humanized_money_with_symbol Money.new(current_coin_price *100, @offering.target_currency)%> <%= @offering.target_currency %>
+              </h3>
+              <h3>
+                <span>Price Per Coin: </span>
+                <% price_per_coin = Money.new(@offering.price_per_coin * 100, @offering.target_currency) %>
+                <%= humanized_money_with_symbol(price_per_coin) %> <%= @offering.target_currency %>
+              </h3>
+              <h3>
+                <span>Exchange Rate: </span>
+                <%= humanized_money_with_symbol exchange_rate %> <%= @offering.target_currency %>
+              </h3>
+            </div>
+            <div class="active-trades">
+              <% if @offering.active_trades.present? %>
+              <table class="rwd-table">
+                <thead>
+                  <tr>
+                    <th>Trade ID</th>
+                    <th>Status</th>
+                    <th>Seller</th>
+                    <th>Exchange Item</th>
+                    <th>Coin Amount</th>
+                    <th>Cryptocurrency</th>
+                    <th>Expires In</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @offering.active_trades.each do |trade| %>
+                  <tr>
+                    <td  data-th="Trade Id">
+                      <%= link_to trade.id, trade_path(trade) %>
+                    </td>
+                    <td  data-th="Status">
+                      <%= trade.status.titleize%>
+                    </td>
+                    <td  data-th="Seller">
+                      <%= trade.seller.username%>
+                    </td>
+                    <td  data-th="Exchange Item">
+                      <%= trade.offering.trade_item.title %>
+                    </td>
+                    <td  data-th="Coin Amount">
+                      <%= trade.coin_amount %>
+                    </td>
+                    <td  data-th="Cryptocurerncy">
+                      <%= trade.coin_type %>
+                    </td>
+                    <td  data-th="Expires In">
+                      <%= trade.time_until_expiry %>
+                    </td>
+                  </tr>
+                  <% end %>
+                </tbody>
+
+              </table>
+              <% else %>
+              <div class="no-results">
+                <p>No Currently Active Trades.</p>
+              </div>
+              <% end %>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <div class="description">
+          <%= simple_format @offering.description %>
+        </div>
+
+        <div class="actions">
+          <% unless current_user.trader.id == @offering.seller_id %>
+          <div class="btns">
+
+            <%= form_tag(trades_path) do %>
+              <%= hidden_field_tag 'trade[offering_id]', @offering.id  %>
+              <%= hidden_field_tag 'trade[buyer_id]', current_user.trader.id  %>
+              <%= hidden_field_tag 'trade[coin_amount]', payout[:coin] %>
+              <%= hidden_field_tag 'trade[target_amount]', @target_amount %>
+
+
+              <%= submit_tag 'Accept', class: 'topcoat-button--cta' %>
+            <% end %>
+            <%= link_to 'Decline', exchange_path(target_amount: @target_amount, ex_id: @offering.trade_item_id)%>
+          </div>
+          <% else %>
+          <div class="seller">
+            <%= link_to 'Edit', edit_offering_path(@offering), class: 'topcoat-button' %>
+            <%= form_tag(offering_path, method: :DELETE) do %>
+              <%= submit_tag 'Destroy', class: 'topcoat-button' %>
+            <% end %>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

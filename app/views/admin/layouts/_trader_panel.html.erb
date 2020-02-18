@@ -1,0 +1,19 @@
+<div class="admin-panel">
+  <div class="info">
+    <h3>Admin Panel</h3>
+
+    <div class="activity">
+      <div> <span>Last Login: </span><%= trader.user.last_login_at %> </div>
+      <div> <span>Last Logout: </span><%= trader.user.last_logout_at %> </div>
+      <div> <span>Last Active: </span><%= trader.user.last_activity_at %> </div>
+      <div> <span>Last Login IP: </span><%= trader.user.last_login_from_ip_address %> </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= link_to 'Suspend Trader', '#', class: 'btn btn-primary' %>
+    <%= link_to '1 Week Ban', '#', class: 'btn btn-primary' %>
+    <%= link_to 'Send Message', '#', class: 'btn btn-primary' %>
+    <%= link_to 'Mark Possible Scammer', '#', class: 'btn btn-primary' %>
+  </div>
+</div>

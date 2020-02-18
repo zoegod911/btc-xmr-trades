@@ -1,0 +1,58 @@
+@import 'spectre';
+@import 'spectre-exp';
+@import 'spectre-icons';
+@import 'chat-bubbles';
+
+
+@import 'nav';
+@import 'home';
+@import 'login';
+@import 'trades';
+@import 'trader';
+@import 'offerings';
+@import 'registrations';
+@import 'global-chat';
+
+body {
+  color: #e9dcbe;
+  background-color: #343434;
+}
+
+.admin-panel { padding: 3em; }
+
+.Flash {
+  z-index: 9999;
+  position: fixed; bottom: 0;
+  -webkit-animation: cssAnimation 5s forwards;
+  animation: cssAnimation 5s forwards;
+}
+
+@keyframes cssAnimation {
+    0%   {opacity: 1;}
+    90%  {opacity: 1; bottom: -5px;}
+    100% {opacity: 0; bottom: -50px;}
+}
+@-webkit-keyframes cssAnimation {
+    0%   {opacity: 1;}
+    90%  {opacity: 1; bottom: -5px;}
+    100% {opacity: 0; bottom: -50px;}
+}
+
+.led-green {
+  margin: 20px auto;
+  width: 8px;
+  height: 8px;
+  background-color: #690;
+  border-radius: 50%;
+  box-shadow: #000 0 1px 5px 1px, inset #460 0 2px 6px, #7D0 0 2px 9px;
+}
+
+
+.led-yellow {
+    margin: 20px auto;
+    width: 8px;
+    height: 8px;
+    background-color: #A90;
+    border-radius: 50%;
+    box-shadow: #000 0 -1px 7px 1px, inset #660 0 -1px 9px, #DD0 0 2px 12px;
+}

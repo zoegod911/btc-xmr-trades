@@ -1,0 +1,448 @@
+.container.offering-list-all {
+  h1 {
+    padding: 2em 0 1em;
+    text-align: center;
+    color: rgba(227, 163, 90, 0.77);
+  }
+
+  .trade-img {
+    img {
+      max-width: 10vw;
+      margin-right: 1em;
+    }
+  }
+
+  .nav {
+    width: 100vw;
+    margin: 0 auto;
+    color: #f0f0f0;
+
+    a {
+      display: block;
+      padding: 0 0 0 46px;
+      line-height: inherit;
+      cursor: pointer;
+    }
+
+     &__menu {
+       width: 100%;
+       margin: 0 auto;
+       font-weight: 700;
+       line-height: 45px;
+       text-transform: uppercase;
+       padding: 0 0px 25px 6px;
+
+       &-item {
+         display: inline-flex;
+         position: relative;
+         text-align: center;
+         font-size: 2em;
+         width: 47vw;
+         list-style: none;
+         letter-spacing: -0.5px;
+         color: rgba(227, 163, 90, 0.57);
+         background-color: rgba(255, 225, 189, 0.13);
+         box-shadow: 1px 4px 15px 1px rgba(253, 140, 16, 0.12);
+         text-shadow: -3px 4px 8px rgba(224, 198, 168, 0.16);
+
+         padding: 14px 39px;
+         padding-left: 20px;
+         display: inline-flex;
+         justify-content: center;
+         margin: 5px 5px 5px 8px;
+         vertical-align: text-bottom;
+
+         &:hover {
+           color: rgba(227, 163, 90, 0.77);
+           box-shadow: 1px 4px 15px 1px rgba(253, 140, 16, 0.35);
+           text-shadow: -3px 4px 8px rgba(224, 198, 168, 0.3);
+
+           .nav__submenu {
+             display: block;
+
+             .thumb {
+               display: inline-flex;
+
+               img {
+                 height: 64px; width: 64px;
+                 position: relative; top: 8px;
+               }
+             }
+
+             .title {
+               display: inline-flex;
+               position: relative;
+               padding-left: 4px;
+               max-width: 265px;
+               bottom: 24px;
+             }
+
+             a {
+               color: rgba(227, 163, 90, 0.47);
+             }
+           }
+         }
+       }
+
+     }
+
+
+    &__submenu {
+      z-index: 99;
+      width: 47.3vw;
+      display: none;
+      font-weight: 900;
+      max-height: 300px;
+      position: absolute;
+      overflow-y: scroll;
+      list-style: square;
+      text-transform: none;
+      left: -15px; top: 59px;
+      background-color: rgba(0, 0, 0, 0.8);
+
+      &-item {
+        text-align: left;
+        font-size: 0.6em;
+        padding-left: 3px;
+
+        ::marker {
+          margin-right: 3px;
+        }
+        &:hover {
+          background: rgba( #988458, 0.2 );
+        }
+      }
+    }
+  }
+
+  .active-trades {
+    margin: 63px;
+    padding: 20px 40px;
+    background-color: rgba(#312720, 0.7);
+    box-shadow: 1px 4px 15px 1px rgba(253, 140, 16, 0.14);
+
+    .header {
+      display: flex;
+      margin: 1em 0.3em 2em;
+      justify-content: space-between;
+
+      h3 {
+        text-transform: uppercase;
+        color: antiquewhite;
+        font-size: 1.4em;
+        letter-spacing: 1.4px;
+      }
+
+    }
+
+  .btn-primary {
+    height: 55px;
+    margin-top: 40px;
+    font-weight: 900;
+    line-height: 3.1em;
+    padding: 0.1em 1em;
+    border-radius: 5px;
+    border-color: black;
+    color: antiquewhite;
+    background-color: #965516;
+  }
+  .trade-amount {
+    padding: 1em 2em;
+    border: 2px #935320 solid;
+    background-color: rgba(152, 139, 122, 0.2);
+
+    div {
+      display: inline-flex;
+    }
+
+    .how-much {
+      margin-left: 15px;
+
+      form {
+        .fiat {
+          margin: 13px 5px;
+
+        }
+      }
+    }
+    .field {
+      margin: 0 3px;
+      display: inline-block;
+
+      label {
+        display: flex;
+        font-weight: 100;
+        margin-bottom: 2px;
+        color: antiquewhite;
+
+        &[for='offering_currency'] {
+          margin-left: -3px;
+        }
+      }
+      input[type=number] {
+        width: 88px;
+        height: 36px;
+      }
+
+      select {
+        height: 36px;
+      }
+    }
+
+    .trade-item {
+      font-weight: 900;
+      vertical-align: bottom;
+      color: antiquewhite;
+      font-family: Orion, Helvetica;
+      font-size: 1.1em;
+
+      span {
+        margin: 0 5px;
+      }
+    }
+  }
+  .results {
+    padding: 2em 1em;
+  }
+  .trades {
+    margin: 40px 0 0;
+
+    span.count {
+      font-size: 1.3em;
+      color: antiquewhite;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .offering {
+      display: flex;
+      padding: 2em 0;
+      margin: -5px 0 1.3rem;
+      border: 8px double #98550a;
+      justify-content: space-evenly;
+      background-color: rgba(#988b7a, 0.2);
+
+      div {
+        margin-top: 10px;
+      }
+
+      .avatar {
+        border-radius: 110px;
+        height: 50px; width: 50px;
+        position: relative; top: 8px;
+        background: rgba(#947e50, 0.3);
+
+        &.trade {
+          top: 40px;
+        }
+
+        img {
+          top: 0px;
+          width: 50px;
+          position: relative;
+        }
+
+      }
+      .minimum-trades {
+        color: antiquewhite;
+        position: absolute;
+        font-weight: 100 !important;
+        width: 300px;
+      }
+
+      .statement {
+        width: 65%;
+        font-size: 0.9em;
+        padding: 2px 20px;
+        margin: 0 0 11px;
+        color: antiquewhite;
+        letter-spacing: 1.3px;
+        background-color: rgba(0,0,0,0.05);
+
+        &.trade {
+          margin-top: 40px;
+        }
+        span {
+          font-weight: 900;
+          font-size: 1.2em;
+          a {
+            color: aliceblue;
+          }
+        }
+      }
+
+      span.payout {
+        color: bisque;
+        font-size: 0.98em;
+        position: absolute;
+        letter-spacing: 0.6px;
+      }
+    }
+  }
+  .pagination {
+    padding: 1em;
+    background-color: rgba(152, 139, 122, 0.12);
+  }
+}
+}
+
+
+.preview-trade {
+  margin: 70px auto;
+  padding: 40px 20px;
+  background-color: #38373d;
+
+  h1 {
+    color: aliceblue;
+    font-size: 2.1em;
+    text-align: center;
+  }
+
+  .trade-details {
+    display: flex;
+    margin: 25px;
+
+    .avatar {
+      margin-top: 40px;
+      display: inline-flex;
+      width: 100px; height: 100px;
+
+      img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    .trade-breakdown {
+      display: inline-flex;
+
+      p {
+        font-size: 1.8em;
+        margin: 56px 20px;
+        color: antiquewhite;
+        letter-spacing: 0.3px;
+        width: 235px;
+      }
+
+      a {
+        color: aquamarine;
+      }
+    }
+  }
+
+  .description {
+    color: aliceblue;
+    font-size: 1.4em;
+    text-align: center;
+    margin: 50px 0;
+    background: rgba(0,0,0,0.3);
+    padding: 1em;
+  }
+
+  .seller {
+    display: block;
+    margin: 0 auto;
+
+    .trade-pricing, .active-trades {
+      display: block;
+
+      h3 {
+        font-size: 1.3em;
+        color: white;
+      }
+    }
+    .no-results {
+      background:rgba(0,0,0,0.4);
+      padding: 1em;
+      color: whitesmoke;
+      font-weight: 900;
+    }
+  }
+
+  .actions {
+    width: 100%;
+
+    .seller {
+      display: flex;
+      justify-content: center;
+
+      a {
+        margin-right: 5px;
+      }
+    }
+
+    .btns {
+      width: 100px;
+      margin: 0 auto;
+      text-align: center;
+
+
+      a {
+        color: whitesmoke;
+      }
+    }
+  }
+}
+
+
+.new-offering {
+  width: 95vw;
+  color:wheat;
+  margin: 60px auto;
+  background:rgba(0,0,0,0.8);
+
+  form {
+    padding: 60px;
+    display: block;
+    text-align: center;
+
+    .coin-payments {
+      display: flex;
+      justify-content: center;
+
+      .bitcoin, .monero {
+        margin: 20px;
+
+        .coin-img img {
+          width: 32px; height: 32px;
+        }
+      }
+    }
+    .field {
+      margin: 60px 0;
+
+      label {
+        display: block;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 900;
+        font-size: 1.2em;
+      }
+
+      input[type=number] {
+        padding: 1em;
+        font-size: 1.2em;
+      }
+
+      select {
+        padding: 1em;
+        margin: 1em 0;
+      }
+
+      textarea {
+        padding: 2em 3em;
+        max-width: 100%;
+      }
+
+      ul {
+        list-style: square;
+        text-align: left;
+        margin: 20px auto;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        justify-content: center;
+        display: grid;
+      }
+    }
+  }
+}

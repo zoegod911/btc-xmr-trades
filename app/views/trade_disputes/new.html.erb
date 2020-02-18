@@ -1,0 +1,39 @@
+<% cache 'christ_the_redeemer' do %>
+  <section class="fullscreen-bg">
+    <%= image_tag 'christ_the_redeemer.gif', class: 'fullscreen-bg__video', preload: 'auto' %>
+  </section>
+<% end %>
+
+<section class="home-main new-dispute">
+  <h1>Start a Dispute</h1>
+
+  <%= form_tag(trade_disputes_path) do %>
+    <div class="container">
+      <label for="other-reasons">Other Reason?</label>
+      <input type="checkbox" class="other-reasons" name="other_reasons" value="1">
+      <div class="field default-reasons">
+        <%= label_tag('trade_dispute[claim_reason]', 'Reason') %>
+        <%= select_tag('trade_dispute[claim_reason]', options_for_select(TRADE_DISPUTE_REASONS.dup.prepend(nil))) %>
+      </div>
+
+
+
+      <div class="field other-reason">
+        <%= label_tag('trade_dispute[other_reason]', 'Other Reason') %>
+        <%= text_field_tag('trade_dispute[other_reason]', '', placeholder: 'Other reason for dispute') %>
+      </div>
+
+
+      <div class="claim_details">
+        <%= label_tag('trade_dispute[claim_details]', 'Claim Details') %>
+        <textarea name="trade_dispute[claim_details]" rows="8" cols="60" placeholder="Elaborate on details on your claim. Include screenshots, links to chat & messages, etc..."></textarea>
+      </div>
+
+      <%= hidden_field_tag 'trade_dispute[opened_by_id]',   @started_by_user %>
+      <%= hidden_field_tag 'trade_dispute[against_id]',     @against_user %>
+      <%= hidden_field_tag 'trade_dispute[trade_id]',  @trade.id %>
+
+      <%= submit_tag 'Start Dispute', class: 'topcoat-button' %>
+    </div>
+  <% end %>
+</section>

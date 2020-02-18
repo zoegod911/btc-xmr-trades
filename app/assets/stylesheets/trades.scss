@@ -1,0 +1,517 @@
+.trade-show {
+  background-color: rgba(#4d1606, 0.99);
+
+  .trade-status {
+    display: flex;
+    color: cornsilk;
+    padding: 1em 0em 1em 2em;
+    justify-content: space-around;
+    background-color: rgba(77, 22, 6, 0.99);
+
+    h1 {
+      padding: 0.3em 0 0;
+      font-size: 1.1rem;
+    }
+  }
+
+  .trade {
+    display: flex;
+
+    &.completed {
+      .trade-chat {
+        width: 75vw;
+      }
+      .trade-actions {
+        width: 25vw;
+      }
+    }
+
+    &.disputed, &.expired {
+      .trade-chat { width: 100vw; }
+      .trade-actions { display: none;}
+    }
+
+    .trade-chat {
+      height: 73.3vh;
+      width: 90vw;
+    }
+
+    .messages {
+      height: 100%;
+      overflow-y: scroll;
+      background-color: #121619;
+    }
+
+    .trade-actions {
+      max-width: 29vw;
+      max-height: 73.3vh;
+      overflow-y: scroll;
+      background-color: #121619;
+
+      .btns {
+        padding-top: 1em;
+        text-align: center;
+        input {
+          margin: 1em 0 0.5em;
+        }
+      }
+
+      .populated {
+        p {
+          color: tan;
+          margin: 1em;
+          padding: 1em;
+          font-weight: 700;
+          text-align: center;
+          background-color:rgba(255,255,253, 0.3);
+
+          &.not {
+            color: salmon;
+          }
+        }
+      }
+
+      p {
+        word-break: break-word;
+        padding: 1em;
+        text-align: center;
+      }
+
+      .qr {
+        .img-wrap {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          img {
+            width: 125px;
+            height: 125px;
+          }
+        }
+
+        .deposit-msg {
+          padding: 1em;
+
+          b {
+            word-wrap: break-word;
+          }
+        }
+      }
+
+      .destination {
+        padding: 1em;
+        text-align: center;
+
+        h3 {
+          font-size: 1.1rem;
+        }
+      }
+
+      form {
+        padding: 1em;
+
+        h1  {
+          font-size: 22px;
+          color: whitesmoke;
+          text-align: center;
+          letter-spacing: -0.9px;
+        }
+
+        .field {
+          width: 100px;
+          display: block;
+          margin: 20px auto;
+
+          label {
+            color: white;
+            display: block;
+            margin: 0.5em 0;
+            font-size: 0.9em;
+          }
+
+          &.text {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            textarea {
+              height: 35vh;
+              max-width: 100%;
+              padding: 1em;
+            }
+          }
+        }
+
+
+      }
+
+    }
+  }
+
+  .sent-by {
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+
+    .avatar {
+      width: 64px; height: 64px;
+
+      img {
+        width: 64px; height: 64px;
+      }
+    }
+  }
+
+  .msg {
+    padding: 2em;
+    display: flex;
+    margin: 1em 0.3em;
+
+    &.start {
+      justify-content: flex-start;
+    }
+
+    &.reply {
+      justify-content: flex-end;
+    }
+
+    .username, .sent-at {
+      color: wheat;
+      font-size: 1.1em;
+      a { color: aquamarine; }
+      b {
+        font-size: 1.3em;
+        color: crimson;
+      }
+    }
+
+
+    .msg-content {
+      display: inline-block;
+
+      .bubble {
+        display: inline-block;
+      }
+
+      .talk-bubble {
+        min-width: 240px;
+        max-width: 475px;
+        font-weight: 900;
+        color: #582300;
+        border-radius: 11px;
+        letter-spacing: 1.1px;
+        margin: 14px 50px auto 43px;
+
+        &.system {
+          background-color: rgba(77, 22, 6, 0.99);
+          color: snow;
+          font-size: 1.2em;
+          font-weight: 900;
+          animation-play-state: running;
+          animation: float 4s ease-in-out infinite;
+          box-shadow: 7px 12px 23px rgba(snow, 0.03) !important;
+          &:after {
+            border-color: rgba(77, 22, 6, 0.99) transparent transparent rgba(77, 22, 6, 0.99);
+          }
+          &:hover {
+            animation-play-state: paused;
+          }
+
+          &.tri-right.left-in {
+            &:after {
+              border-color: rgba(77, 22, 6, 0.99) rgba(77, 22, 6, 0.99) transparent transparent;
+            }
+          }
+        }
+
+        p {
+           word-wrap: break-word;
+         }
+      }
+
+      .attachments {
+        max-width: 100%;
+        width: 75%;
+        margin: 1em 0;
+        word-wrap: break-word;
+
+        li { padding: 0 0.5em; }
+        a {
+          max-width: 210px;
+        }
+      }
+
+      .sent-at {
+        margin: 10px 50px;
+        position: relative;
+        left: -10px;
+      }
+    }
+  }
+
+  .send-msg {
+    width: 100%;
+    position: relative;
+
+    .disable-overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(darkgrey,0.8);
+    }
+    .input {
+      background-color: silver;
+
+      input[type="text"] {
+        height: 50px;
+        width: 84.5%;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .attachment {
+        width: 4.8%;
+        height: 100%;
+        display: inline-flex;
+
+        label {
+          width: 100%;
+          height: 45px;
+          cursor: pointer;
+
+          img {
+            width: 35px;
+            height: 25px;
+            margin: 0 auto;
+            position: relative; top: 9px;
+          }
+        }
+      }
+      input[type="submit"] {
+        width: 9.7%;
+        border: none;
+        height: 54px;
+        font-weight: 900;
+        margin-left: -4px;
+      }
+    }
+  }
+}
+
+
+.trades-dashboard {
+  width: 100%;
+
+  .dashboard-header {
+    width: 100%;
+    height: 35vh;
+    display: table;
+    background: rgba(0,0,0,0.8);
+
+    h1 {
+      margin: 0;
+      font-size: 2.3em;
+      text-align: center;
+      display: table-cell;
+      color: palegoldenrod;
+      letter-spacing: -2.4px;
+      vertical-align: middle;
+    }
+  }
+
+  .buying-and-selling {
+    display: flex;
+
+    div {
+      width: 50%;
+      height: 70px;
+      display: table;
+
+      &.buying { background-color: darkslategray; }
+      &.selling { background-color: cadetblue; }
+
+      a {
+        vertical-align: middle;
+        display: table-cell;
+        text-align: center;
+        font-size: 21px;
+        text-decoration: none;
+        color: aliceblue;
+
+        &:hover {
+          text-decoration: underline;
+        }
+
+        &.active {
+          font-weight: 900;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .trader-details {
+    min-height: 42.2vh;
+    padding-bottom: 100px;
+    background-color: rgba(#0d3673, 0.8);
+
+
+    h3 {
+      margin: 0;
+      padding: 3em 0 2em;
+      text-align: center;
+      font-size: 2em;
+      color: white;
+     }
+
+     .rwd-table {
+       margin: 0 auto;
+       border-radius: 18px;
+       margin: 3em 2em;
+       padding: 0 1em;
+
+       th {
+          font-size: 1.3em;
+          color: aquamarine;
+          letter-spacing: -1.1px;
+       }
+
+       tbody tr:hover {
+         background-color: #485B6E;
+         color: yellow;
+       }
+
+       td {
+         font-size: 16px;
+         letter-spacing: -0.8px;
+
+
+         a {
+           letter-spacing: 1px;
+           color: beige;
+         }
+       }
+     }
+
+     .no-results {
+       width: 20vw;
+       padding: 1em;
+       margin: 0 auto;
+       text-align: center;
+       background-color: rgba(0,0,0,0.4);
+
+       p {
+         color: aliceblue;
+         font-weight: 100;
+         font-size: 1.1em;
+       }
+     }
+
+     .post-trade {
+       display: flex;
+       padding: 30px 25px 0;
+       justify-content: flex-end;
+     }
+  }
+}
+
+
+$breakpoint-alpha: 480px; // adjust to your needs
+
+.rwd-table {
+  margin: 1em 0;
+  min-width: 300px; // adjust to your needs
+
+  tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    display: none; // for accessibility, use a visually hidden method here instead! Thanks, reddit!
+  }
+
+  td {
+    display: block;
+
+    &:first-child {
+      padding-top: .5em;
+    }
+    &:last-child {
+      padding-bottom: .5em;
+    }
+
+    &:before {
+      content: attr(data-th)": "; // who knew you could do this? The internet, that's who.
+      font-weight: bold;
+
+      // optional stuff to make it look nicer
+      width: 6.5em; // magic number :( adjust according to your own content
+      display: inline-block;
+      // end options
+
+      @media (min-width: $breakpoint-alpha) {
+        display: none;
+      }
+    }
+  }
+
+  th, td {
+    text-align: left;
+
+    @media (min-width: $breakpoint-alpha) {
+      display: table-cell;
+      padding: .25em .5em;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+  }
+
+
+}
+
+
+// presentational styling
+
+
+.rwd-table {
+  background: #34495E;
+  color: #fff;
+  border-radius: .4em;
+  overflow: hidden;
+
+  tr {
+    border-color: lighten(#34495E, 10%);
+  }
+  th, td {
+    margin: .5em 1em;
+  }
+  th, td:before {
+    color: #dd5;
+  }
+}
+
+@keyframes float {
+	0% {
+		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.8);
+		transform: translatey(0px);
+	}
+	50% {
+		box-shadow: 0 25px 15px 0px rgba(0,0,0,0.4);
+		transform: translatey(-20px);
+	}
+	100% {
+		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.9);
+		transform: translatey(0px);
+	}
+}
