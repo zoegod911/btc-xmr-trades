@@ -1,24 +1,16 @@
-# README
+Pangolin 
+###
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+run 
+```
+rails db:create db:migrate db:seed
+```
 
-Things you may want to cover:
+in pangolin-payments
 
-* Ruby version
+```
+sequelize db:create && sequelize db:migrate
+npm run dev
+```
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+you will have to run and setup your monero daemon for XMR support on the pangolin-payment side.
