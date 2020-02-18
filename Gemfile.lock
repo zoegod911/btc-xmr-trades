@@ -245,7 +245,7 @@ GEM
       activemodel (>= 5)
       elasticsearch (>= 6)
       hashie
-    secure_headers (6.1.2)
+    secure_headers (6.3.0)
     shrine (3.2.1)
       content_disposition (~> 1.0)
       down (~> 5.1)
