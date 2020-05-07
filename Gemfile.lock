@@ -259,7 +259,7 @@ GEM
       sidekiq (>= 4.2.1)
     sixarm_ruby_unaccent (1.2.0)
     socksify (1.7.1)
-    sorcery (0.14.0)
+    sorcery (0.15.0)
       bcrypt (~> 3.1)
       oauth (~> 0.4, >= 0.4.4)
       oauth2 (~> 1.0, >= 0.8.0)
